@@ -1,5 +1,5 @@
 import string
-import random
+import secrets
 import tkinter as tk
 from tkinter import ttk
 
@@ -8,18 +8,21 @@ numbers = string.digits
 symbols = string.punctuation
 generate = letters + numbers + symbols
 
-length = 20
+length = 20  # add your own password_length
 
-password = "".join(random.sample(generate, length))
+password = "".join(secrets.choice(generate) for i in range(length))
 
-# print(password) Console mode deactivated
-version = "0.0.0.1.3"
-# create a window
-root = tk.Tk()
+# gen-version
+version = "0.0.0.1.4"
 print("Welcome on Password Generator")
-print("Developped by : Noxious")
+print("Developed by : Noxious")
 print("Gen-Version: " + version)
 name = input("Enter your name : ")
+print(password)
+
+# create a window
+root = tk.Tk()
+
 # size of the window
 root.geometry("450x250")
 
@@ -27,9 +30,23 @@ root.geometry("450x250")
 root.title("Password Generator | Developed by : Noxious")
 
 # main text
-tk.Label(text="Welcome " + name + ", This is your password:", foreground="red", background="grey", width=100, font="Arial").pack()
-tk.Label(text=f"{password}", background="grey", width="100", height="50", foreground="red", font="Arial").pack()
+tk.Label(text="Welcome " + name + f",\n This is your password: {password} ", foreground="green",
+         background="grey", width=100, font="Arial").pack()
 
+# first button
+reset_btn = ttk.Button(root, text="RESET", command=lambda: generate_password(length))
+# second button
+copy_btn = ttk.Button(root, text="Copy Password", command=None)
+
+reset_btn.pack(ipadx=5, ipady=5, expand=True)
+copy_btn.pack(ipadx=4, ipady=4, expand=True)
+
+def generate_password(length):
+    global password
+    password = "".join(secrets.choice(generate) for i in range(length))
+    tk.Label(root, text=f"Your new password is: {password}", foreground="green", background="grey", width=100, font="Arial").pack()
+
+# window update
+root.update()
 # Main loop
 root.mainloop()
-# Next Update : GUI Update : Better design
